@@ -1,28 +1,3 @@
-/**
- * This is a java version of the game "Aquamatics" migrated from MacOS
- * Copyright (C) 2006  You XU 
- * Mathematics Department, Nanjing University
- * 03/30/2006
- * 
- * This program is free software; you can redistribute it and/or
- * modify it under the terms of the GNU General Public License
- * as published by the Free Software Foundation; either version 2
- * of the License, or (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *	
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
- *
- * @author You XU
- * It is straitforward that ResourceManager must be a singleton
- *
- */
-
 package org.orchesta.mathena.aquamatic.model;
 
 import java.awt.Canvas;
@@ -42,6 +17,9 @@ import javax.imageio.ImageIO;
 
 public class ResourceManager {
 	
+	private GameMap map = new GameMap();	
+	private Hashtable atomHash = new Hashtable();
+	
 	private ResourceManager () {}
 		
 	private static ResourceManager rm = new ResourceManager();
@@ -57,9 +35,9 @@ public class ResourceManager {
 		BufferedImage background = new BufferedImage(15*30, 15*30, BufferedImage.TYPE_4BYTE_ABGR);
 		Graphics2D gb = background.createGraphics();
 		gb.setColor(new Color(180,180,180));
-		gb.drawRoundRect(5,5,440,440 ,10,10);
-		gb.drawRoundRect(5,6,440,439, 10,11);
-		gb.drawRoundRect(5,7,440,438, 11,11);
+//		gb.drawRoundRect(5,5,440,440 ,10,10);
+//		gb.drawRoundRect(5,6,440,439, 10,11);
+//		gb.drawRoundRect(5,7,440,438, 11,11);
 		return background;
 	}
 	
@@ -101,7 +79,8 @@ public class ResourceManager {
 		map.setFail();
 		try {
 			File f = new File("resources/abilder.png");
-    		BufferedImage bi = ImageIO.read(f);   		    		
+    		BufferedImage bi = ImageIO.read(f);  
+    		//level="0";
 			File f2 = new File("levels/level_"+level);
 	 		BufferedReader br = new BufferedReader(new FileReader(f2));
 	 		String tag;
@@ -118,16 +97,24 @@ public class ResourceManager {
 					
 					case 'a': {
 
-						// Create an empty image;
+						/*  Create an empty image */
 						BufferedImage empty = new BufferedImage(30,30,BufferedImage.TYPE_4BYTE_ABGR);
 			    		Graphics2D g = empty.createGraphics();
+			    		
+			    		/*
+			    		 *  Canvas 组件表示屏幕的一块空白矩形区，应用可在其上进行绘制，或在此处捕获用户的输入事件。
+			    		 * 一个应用若要获取诸如创建一个用户自定义组件等有用功能，必须继承 Canvas 类。
+			    		 * 为实现画布上的用户自定义图形，必须覆盖 paint 方法。 
+			    		 */
 			    		Canvas c = new Canvas();
-			    		// Find the right atom;
+			    		
+			    		/* Find the right atom */
 			    		BufferedImage atom;
 			    		int id = (int)tag.charAt(5);
+			    		
 			    		if (tag.charAt(7)<='D'&&tag.charAt(7)>='A') {
 			    			int ai = (int)(tag.charAt(7)-'A');
-			    			atom = bi.getSubimage(62+31*ai, 93, 30,30);
+			    			atom = bi.getSubimage(62+31*ai, 31*3, 30,30);
 			    		}
 			    		
 			    		else if (tag.charAt(7)=='o') {
@@ -141,17 +128,20 @@ public class ResourceManager {
 						
 						g.drawImage(atom, 0, 0, new Color(255,255,255, 0) , c);
 						
+						/*
+						 *  画分子之间的连接键
+						 */
 						int i = tag.length()-9;
 						while (i>0) {
 							char k = tag.charAt(8+i);
 							
-							if (k>='a')
+							if (k>='a') //单键
 							{	
 								int ki = (int) (k-'a');
 								BufferedImage affix = bi.getSubimage(31*ki, 31, 30, 30);
 			    				g.drawImage(affix, 0, 0, new Color(255,255,255, 0), c);
 								i--;
-							} else {
+							} else { // 双键
 								int ki = (int) (k-'A');
 								BufferedImage affix = bi.getSubimage(31*ki, 62, 30, 30);
 			    				g.drawImage(affix, 0, 0, new Color(255,255,255, 0), c);
@@ -187,7 +177,7 @@ public class ResourceManager {
 					for (int y = 0; y<mole[k].length(); y++)
 					{
 						goal[k][y] = (int)mole[k].charAt(y);
-						//System.out.print((char)map[k][y]);
+						//System.out.print((char)goal[k][y]);
 					}
 					//System.out.println("");
 				}
@@ -205,10 +195,8 @@ public class ResourceManager {
 		return map;
 	}
 	
-	private GameMap map = new GameMap();	
-	private Hashtable atomHash = new Hashtable();
-	private void putAtom(int index, BufferedImage bi)
-	{
+	
+	private void putAtom(int index, BufferedImage bi) {
 		atomHash.put(new Integer(index), bi);
 	}
 

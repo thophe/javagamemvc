@@ -1,67 +1,43 @@
-/**
- * This is a java version of the game "Aquamatics" migrated from MacOS
- * Copyright (C) 2006  You XU 
- * Mathematics Department, Nanjing University
- * 03/30/2006
- * 
- * This program is free software; you can redistribute it and/or
- * modify it under the terms of the GNU General Public License
- * as published by the Free Software Foundation; either version 2
- * of the License, or (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *	
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
- * 
- * 	This is the Model in the MVC application structure
- *  The MVC approach is implemented using Java's Observer to Observable contract.  
- *  Since this is the Model it inherits from the Obeservable class 
- *  @version 0.0.1
- *  
- */
+
 package org.orchesta.mathena.aquamatic.model;
 
 import java.util.Observable;
-/**
- * 
- * @author Xu You
- *
- */
+
 public class GameMap extends Observable {
-	/**
-	 * 
-	 */
+	
+	// This holds the atoms including the initial state
+	private int map[][] = new int[15][15];
+	
+	// This is the structure of the final molecule
+	private int goal[][];
+	
+	private int[][] directions = {
+			{0,1}, 	//right
+			{1,0},  	//left
+			{0,-1},	//down
+			{-1,0}	//up
+			};
+	
+	private ResourceManager rm;
+	private boolean success;
+	private String name; 
+	private int nowx =0 ;
+	private int nowy =0 ;
+	private boolean hintstatus = false;
+	
 	public static final int BLANK = '.';
 
-	/**
-	 * 
-	 */
 	public static final int WALL = '#';
 	
-	/**
-	 * 
-	 */
 	public static final int RIGHT = 'R';
-	
-	/**
-	 * 
-	 */
+
 	public static final int LEFT = 'L';
 	
-	/**
-	 * 
-	 */
 	public static final int UP = 'U';
 	
-	/**
-	 * 
-	 */
 	public static final int DOWN = 'D';
+	
+	
 	
 	/**
 	 * 
@@ -277,19 +253,7 @@ public class GameMap extends Observable {
 	}
 
 	
-	// This holds the atoms including the initial state
-	private int map[][] = new int[15][15];
 	
-	// This is the structure of the final molecule
-	private int goal[][];
-	
-	private int[][] directions = {{0,1},{1,0},{0,-1},{-1,0}};
-	private ResourceManager rm;
-	private boolean success;
-	private String name; 
-	private int nowx =0 ;
-	private int nowy =0 ;
-	private boolean hintstatus = false;
 
 	public ResourceManager getRm() {
 		return rm;
