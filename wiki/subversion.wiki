@@ -1,4 +1,4 @@
-#summary One-sentence summary of this page.
+#summary 关于SVN在eclilpse下的使用
 #labels eclipse,SVN
 
 = Introduction =
