@@ -1,0 +1,1 @@
+This programe is just for those who want practice their java skills, and konw how to desigen a MVC programe. This one is implemented as a real MVC.
